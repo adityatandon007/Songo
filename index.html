@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Song App</title>
+    <link rel="stylesheet" type="text/css" href="font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <section class="welcome-screen">
+            <h1> Welcome to Songify </h1>
+            <h3> Enter name to access your account </h3>
+            <div class="input-wrapper">
+                <input type="text" placeholder="Name" id="name-input" title="Please enter a valid name" autofocus>
+                <button> Go </button>
+            </div>
+            <p class="hidden" id="error-text">The input name should be minimum of three characters.</p>
+        </section>
+
+        <div class="main hidden">
+
+            <header>
+                <i id="logout" class="fa fa-sign-out clickable" title="Sign Out" aria-hidden="true"></i>
+                <div class="right floated user-name"> </div>
+
+            </header>
+
+            <section class="content">
+
+                <audio src="song.mp3"></audio>
+
+                <div class="list-headers">
+                  <div> Title </div>
+                  <div> Artist </div>
+                  <div> Album </div>
+                  <div> Duration </div>
+                  <div> Video </div>
+                  <div> Lyrics </div>
+                </div>
+
+                <div class="song-list">
+
+                  <div id="song1" class="song">
+                    <span class="song-name"> </span>
+                    <span class="song-artist"> </span>
+                    <span class="song-album"> </span>
+                    <span class="song-length"> </span>
+                    <span class="song-video-link"> </span>
+                    <span class="song-lyrics-link"> </span>
+                  </div>
+                  
+                  <div id="song2" class="song">
+                    <span class="song-name"> </span>
+                    <span class="song-artist"> </span>
+                    <span class="song-album"> </span>
+                    <span class="song-length"> </span>
+                    <span class="song-video-link"> </span>
+                    <span class="song-lyrics-link"> </span>
+                  </div>
+                  
+                  <div id="song3" class="song">
+                    <span class="song-name"> </span>
+                    <span class="song-artist"> </span>
+                    <span class="song-album"> </span>
+                    <span class="song-length"> </span>
+                    <span class="song-video-link"> </span>
+                    <span class="song-lyrics-link"> </span>
+                  </div>
+                  
+                  <div id="song4" class="song">
+                    <span class="song-name"> </span>
+                    <span class="song-artist"> </span>
+                    <span class="song-album"> </span>
+                    <span class="song-length"> </span>
+                    <span class="song-video-link"> </span>
+                    <span class="song-lyrics-link"> </span>
+                  </div>
+                  
+                </div>
+
+                <div class="total-songs"></div>
+                <div>
+                  <audio id="all" src="song1.mp3"></audio>
+                  <span>Play All: </span>
+                  <i class="fa fa-play clickable play-all" aria-hidden="true"></i>
+                </div>
+                <div id="submit-song" class="right floated">
+                  <span>Add Song: </span>
+                  <input type="text" id="add-song" placeholder="Song URL">
+                  <button>Submit</button>
+                </div>
+
+                <div class="current-song-wrapper">
+                  <img class="current-song-image">
+                  <div>
+                    <p class="current-song-name"></p>
+                    <p class="current-song-album"></p>
+                  </div>
+                </div>
+
+            </section>
+
+            <footer>
+                <div class="controls">
+                    <div class="player-buttons">
+                        <i class="fa fa-play clickable play-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="progress-wrapper">
+                        <span class="time-elapsed"> </span>
+                        <div class="player-progress">
+                            <div class="progress-filled"> </div>
+                        </div>
+                        <span class="song-duration"></span>
+                    </div>
+                    <div class="time-left"></div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+
+    <script src="./jquery.js"></script>
+    <script>
+
+    var songs = [
+      {
+        'name': 'Badri Ki Dulhania (Title Track)',
+        'artist': 'Neha Kakkar, Monali Thakur, Ikka Singh, Dev Negi',
+        'album': 'Badrinath ki Dulhania',
+        'duration': '2:56',
+        'fileName': 'song1.mp3',
+        'videoLink': 'https://www.youtube.com/watch?v=EEX_XM6SxmY',
+        'lyricsLink': 'http://www.lyricsted.com/tamma-tamma-again-badrinath-ki-dulhania/'
+      },
+      {
+        'name': 'Humma Song',
+        'artist': 'Badshah, Jubin Nautiyal, Shashaa Tirupati',
+        'album': 'Ok Jaanu',
+        'duration': '3:15',
+        'fileName': 'song2.mp3',
+        'videoLink': 'https://www.youtube.com/watch?v=1tVL11ULjYY',
+        'lyricsLink': 'http://www.lyricsted.com/the-humma-song-lyrics-ok-jaanu/'
+      },
+      {
+        'name': 'Nashe Si Chadh Gayi',
+        'artist': 'Arijit Singh',
+        'album': 'Befikre',
+        'duration': '2:34',
+        'fileName': 'song3.mp3',
+        'videoLink': 'https://www.youtube.com/watch?v=Wd2B8OAotU8',
+        'lyricsLink': 'http://www.lyricsted.com/nashe-si-chadh-gayi-befikre/'
+      },
+      {
+        'name': 'The Breakup Song',
+        'artist': 'Nakash Aziz, Arijit Singh, Badshah, Jonita Gandhi',
+        'album': 'Ae Dil Hai Mushkil',
+        'duration': '2:29',
+        'fileName': 'song4.mp3',
+        'videoLink': 'https://www.youtube.com/watch?v=CvPdtf8Ijj4',
+        'lyricsLink': 'http://www.lyricsted.com/the-breakup-song-ae-dil-hai-mushkil/'
+      }
+    ] ;
+
+    // Input Validation and Logout
+
+    $('.welcome-screen button').on('click', function() {
+        var name = $('#name-input').val();
+        if (name.length > 2) {
+            var message = "Welcome, " + name;
+            $('.main .user-name').text(message);
+            $('.welcome-screen').addClass('hidden');
+            $('.main').removeClass('hidden');
+            $('#logout').click(function() {
+              $('.welcome-screen').removeClass('hidden');
+              $('.main').addClass('hidden');
+              $('#name-input').val("");
+              $('#name-input').focus();
+            });
+        } else {
+            $('#name-input').addClass('error');
+            $('#error-text').removeClass('hidden');
+        }
+    });
+    // Validation improvement
+
+    $('#name-input').on('focus', function() {
+      $(this).val("");
+      $(this).removeClass('error');
+      $('#error-text').addClass('hidden');
+    }); 
+
+    // Song Submission 
+
+    $('#submit-song button').on('click', function(){
+      var song_url = $('#add-song').val();
+      if(song_url != "") {
+        song_url = "";
+        alert("Song submitted successfully");
+      }
+      else {
+        $('#add-song').addClass('error');
+      }
+    });
+
+    // Toggle Song
+
+    function toggleSong() {
+      var song = document.querySelector('audio');
+      if (song.paused == true) {
+          console.log('Playing');
+          $('.play-icon').removeClass('fa-play').addClass('fa-pause');
+          song.play();
+      } else {
+          console.log('Pausing');
+          $('.play-icon').removeClass('fa-pause').addClass('fa-play');
+          song.pause();
+      }
+    }
+
+    function fancyTimeFormat(time){
+        // Hours, minutes and seconds
+        var hrs = ~~(time / 3600);
+        var mins = ~~((time % 3600) / 60);
+        var secs = time % 60;
+
+        // Output like "1:01" or "4:03:59" or "123:03:59"
+        var ret = "";
+
+        if (hrs > 0) {
+            ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+        }
+
+        ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+        ret += "" + secs;
+        return ret;
+    }
+
+    function updateCurrentTime() {
+
+      var song = document.querySelector('audio');
+      var currentTime = Math.floor(song.currentTime);
+      var duration = Math.floor(song.duration);
+      var remainingTime = duration - currentTime;
+
+      currentTime = fancyTimeFormat(currentTime);
+      duration = fancyTimeFormat(duration);
+      remainingTime = fancyTimeFormat(remainingTime);
+
+      console.log(currentTime) ;
+      $('.time-elapsed').text(currentTime);
+      $('.song-duration').text(duration);
+      $('.time-left').text(remainingTime);
+
+    }
+
+    // Updating the audio src of play all
+    var i = 1; // Global
+    function updateCurrentSong() {
+      var audio = document.querySelector('#all');
+      if(audio.currentTime == audio.duration) {
+        audio.src = "song" + (i+1).toString() + ".mp3";
+        i++;
+        audio.play();
+      }
+      // Reset when all songs are done
+      if(i>4) {
+        i=1;
+        audio.src = "song" + (i).toString() + ".mp3";
+        audio.play();
+      }
+    }
+
+    function addSongNameClickEvent(songObj,position) {
+      var id = '#song' + position;
+      console.log(id) ;
+      $(id).click(function() {
+        var audio = document.querySelector('audio');
+        var currentSong = audio.src;
+        console.log(currentSong, songObj.fileName, currentSong.search(songObj.fileName)) ;
+        if(currentSong.search(songObj.fileName) != -1)
+        {
+          toggleSong();
+        }
+        else {
+          audio.src = songObj.fileName ;
+          toggleSong() ;
+          changeCurrentSongDetails(songObj);
+        }
+      });
+    }
+
+
+    function changeCurrentSongDetails(songObj) {
+  $('.current-song-image').attr('src','img/' + songObj.image) ;
+  $('.current-song-name').text(songObj.name) ;
+  $('.current-song-album').text(songObj.album) ;
+}
+
+    $('.play-icon').on('click', function() {
+      toggleSong() ;
+    });
+
+    // Space bar, p and Shift+p keys
+
+    $('body').on('keypress', function(event) {
+      if (event.keyCode == 32 || event.keyCode == 80 || event.keyCode == 112) {
+        toggleSong() ;
+      }
+    });
+
+    // Play all click toggling
+    $('.play-all').on('click', function() {
+      var audio = document.querySelector('#all');
+        if (audio.paused == true) {
+          console.log('Playing');
+          $('.play-all').removeClass('fa-play').addClass('fa-pause');
+          audio.play();
+        } 
+        else {
+          console.log('Pausing');
+          $('.play-all').removeClass('fa-pause').addClass('fa-play');
+          audio.pause();
+        }
+    });
+
+    window.onload = function () {
+      changeCurrentSongDetails(songs[0]);
+      setInterval(function() {
+        updateCurrentTime() ;
+      }) ;
+      setInterval(function() {
+        updateCurrentSong();
+      });
+
+      // displays total songs
+
+      $('.total-songs').text("Songs: " + songs.length);
+
+      for(var i =0; i < songs.length;i++) {
+        var obj = songs[i];
+        var name = '#song' + (i+1);
+        var song = $(name);
+        song.find('.song-name').text(obj.name);
+        song.find('.song-artist').text(obj.artist);
+        song.find('.song-album').text(obj.album);
+        song.find('.song-length').text(obj.duration);
+        song.find('.song-video-link').append('<a href="' + obj.videoLink + '">Watch Video</a>');
+        song.find('.song-lyrics-link').append('<a href=' + obj.lyricsLink + '">See Lyrics</a>');
+        addSongNameClickEvent(obj,i+1);
+      }
+    } ;
+
+    </script>
+</body>
+
+</html>
+
+<!--
+1. Create a form to add a song -> Getting input values, adding to objects
+2.  - User
+3. Simple shuffle - User
+5. Play All - User
+6. Add playing class to currently playing song
+7. Song Details - Us
+4. Fetch song list from ajax -> Us
+
+
+-->
